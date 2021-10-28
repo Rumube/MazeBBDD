@@ -1,32 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Message : MonoBehaviour
+namespace Gameplay
 {
-    public string message;
-    public List<string> messages = new List<string>();
-    int id;
-    private void Start()
+    public class Message : MonoBehaviour
     {
-        messages.Add(message);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Message"))
+        public string message;
+        public List<string> messages = new List<string>();
+        int id;
+        private void Start()
         {
-            Message other = collision.gameObject.GetComponent<Message>();
+            messages.Add(message);
+        }
 
-            if (other.GetInstanceID() < transform.GetInstanceID()) 
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Message"))
             {
-                foreach (string msg in other.messages)
+                Message other = collision.gameObject.GetComponent<Message>();
+
+                if (other.GetInstanceID() < transform.GetInstanceID())
                 {
-                    messages.Add(msg);
+                    foreach (string msg in other.messages)
+                    {
+                        messages.Add(msg);
+                    }
+                    Destroy(collision.transform.parent.gameObject);
                 }
-                Destroy(collision.transform.parent.gameObject);
-            } 
-            else Destroy(transform.parent.gameObject);
+                else Destroy(transform.parent.gameObject);
+            }
         }
     }
 }
