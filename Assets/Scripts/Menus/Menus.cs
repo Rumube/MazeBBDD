@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using BBDD;
 
 public class Menus : MonoBehaviour
 {
@@ -52,6 +53,9 @@ public class Menus : MonoBehaviour
         returnToMenu2.onClick.AddListener(delegate { OpenMenu(logInMenu, false); });
         access.onClick.AddListener(delegate { Credentials(); });
         access.onClick.AddListener(delegate { OpenMenu(playMenu, true); });
+        access.onClick.AddListener(() => {
+            StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().Login(usernameData, passwordData));
+        });
 
         // Play Menu
 

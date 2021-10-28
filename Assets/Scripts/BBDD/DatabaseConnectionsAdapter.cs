@@ -35,6 +35,8 @@ namespace BBDD{
                     }
                     else
                     {
+                        Debug.Log(www.downloadHandler.text);
+
                         string jsonArrayString = www.downloadHandler.text;
                         JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
                         ServiceLocator.Instance.GetService<IUserInfo>().SetInfo(nickname, password, jsonArray[0].AsObject["CURRENT_POINTS"], jsonArray[0].AsObject["GLOBAL_POINTS"]);

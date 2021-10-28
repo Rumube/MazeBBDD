@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -168,6 +168,7 @@ MonoBehaviour:
   username: {fileID: 1862024593}
   password: {fileID: 561581074}
   logInError: {fileID: 1809207794}
+  play: {fileID: 0}
   user: {fileID: 2100245440}
   globalPoints: {fileID: 188465333}
 --- !u!4 &52025024
@@ -2462,13 +2463,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf716641f6749840a7ba434ba91e008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usernameInputLogin: {fileID: 1862024593}
-  passwordInputLogin: {fileID: 561581074}
-  usernameInputCreateAccount: {fileID: 1780555259}
-  passwordInputCreateAccount: {fileID: 368963355}
+  usernameInput: {fileID: 0}
+  passwordInput: {fileID: 0}
   LoginButton: {fileID: 1654552446}
   RegisterUserButton: {fileID: 2024354254}
   errorText: {fileID: 1809207794}
+  mainMenu: {fileID: 0}
+  playMenu: {fileID: 0}
+  play: {fileID: 0}
+  user: {fileID: 0}
+  globalPoints: {fileID: 0}
 --- !u!114 &1440275278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2481,6 +2485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f172e289769c9814ab2ececa5cfa7654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ui: {fileID: 0}
 --- !u!4 &1440275279
 Transform:
   m_ObjectHideFlags: 0
