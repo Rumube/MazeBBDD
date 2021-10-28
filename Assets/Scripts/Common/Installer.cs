@@ -19,7 +19,7 @@ namespace Common{
             var mazeInfo = new Maze();
             ServiceLocator.Instance.RegisterService<IMazeInfo>(mazeInfo);
 
-            var messagesInfo = new Message();
+            var messagesInfo = new Consumer.Message();
             ServiceLocator.Instance.RegisterService<IMessage>(messagesInfo);
 
             var errorMessages = new ErrorMessages();
