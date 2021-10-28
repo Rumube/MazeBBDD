@@ -4,7 +4,7 @@ require 'ConnectionSettings.php';
 
 if(!$conn) {
 echo "la conexión no estaría funcionando<br/>";
-die("No pudo conectarse: " . conn->connect_error);
+die("No pudo conectarse: " . $conn->connect_error);
 
 }else{
 	//echo " Conectado ";

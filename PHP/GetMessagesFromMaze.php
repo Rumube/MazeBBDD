@@ -7,7 +7,7 @@ $idMaze = $_GET["idMaze"];
 
 if(!$conn) {
 echo "la conexión no estaría funcionando<br/>";
-die("No pudo conectarse: " . conn->connect_error);
+die("No pudo conectarse: " . $conn->connect_error);
 
 }else{
 	//Preventing sql injections
