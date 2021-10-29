@@ -25,7 +25,6 @@
 				$statement2->close();
 				
 				if($result->num_rows > 0){
-					//echo " A maze has been found ";
 					$data = array();
 					while($obj = $result->fetch_object()){
 						$data[]=$obj;
