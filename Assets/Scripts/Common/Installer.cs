@@ -8,6 +8,7 @@ namespace Common{
     public class Installer : MonoBehaviour
     {
         public UI.UI _ui;
+        public Leaderboard _leaderboard;
         private void Awake()
         {
             var databaseConnectionAdapter = new DatabaseConnectionsAdapter();
@@ -26,6 +27,8 @@ namespace Common{
             ServiceLocator.Instance.RegisterService(errorMessages);
 
             ServiceLocator.Instance.RegisterService(_ui);
+
+            ServiceLocator.Instance.RegisterService<ILeaderboard>(_leaderboard);
         }
 
         private void Start()

@@ -366,7 +366,8 @@ namespace BBDD
                         JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
                         for (int i = 0; i < jsonArray.Count; i++)
                         {
-                           //Aqui guardar la info del leaderboard
+                            ServiceLocator.Instance.GetService<ILeaderboard>().SetInfo(jsonArray[i].AsObject["NICK"],
+                                                                                       jsonArray[i].AsObject["GLOBAL_POINTS"]);
                         }
                     }
                 }
