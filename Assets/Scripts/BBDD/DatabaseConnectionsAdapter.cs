@@ -5,7 +5,8 @@ using UnityEngine.Networking;
 using SimpleJSON;
 using UI;
 
-namespace BBDD{
+namespace BBDD
+{
     public class DatabaseConnectionsAdapter : IRequestInfo
     {
         public IEnumerator Login(string nickname, string password)
@@ -30,7 +31,7 @@ namespace BBDD{
                     if (www.downloadHandler.text.Contains("Wrong credentials"))
                     {
                         Debug.Log(www.downloadHandler.text);
-                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.downloadHandler.text);
+                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError("Wrong credentials");
                         yield return null;
                     }
                     else
@@ -68,15 +69,51 @@ namespace BBDD{
                     if (www.downloadHandler.text.Contains("Username is already taken"))
                     {
                         Debug.Log("Username is already taken");
+                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.downloadHandler.text);
+
                     }
                     else if (www.downloadHandler.text.Contains("Error"))
                     {
                         Debug.Log(www.downloadHandler.text);
+                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.downloadHandler.text);
                     }
-
                     else
                     {
-                        Login(nickname,password);
+                        Login(nickname, password);
+                    }
+                }
+            }
+        }
+
+        public IEnumerator UpdateUser(string nickname, int currentPoints, int globalPoints)
+        {
+            WWWForm form = new WWWForm();
+            //Data we want to validate in php
+            form.AddField("NICK", nickname);
+            form.AddField("CURRENT_POINTS", currentPoints);
+            form.AddField("GLOBAL_POINTS", globalPoints);
+
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UpdateUser.php", form))
+            {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.error);
+                    ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.downloadHandler.text);
+                }
+                else
+                {
+                    if (www.downloadHandler.text.Contains("Record updated successfully"))
+                    {
+                        Debug.Log("Record updated successfully");
+                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.downloadHandler.text);
+
+                    }
+                    else if (www.downloadHandler.text.Contains("Error"))
+                    {
+                        Debug.Log(www.downloadHandler.text);
+                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.downloadHandler.text);
                     }
                 }
             }
@@ -135,7 +172,7 @@ namespace BBDD{
                 {
                     Debug.Log("Error in maze creation");
                 }
-                else if(www.downloadHandler.text.Contains("New maze created"))
+                else if (www.downloadHandler.text.Contains("New maze created"))
                 {
                     Debug.Log("A new maze has been generated");
                 }
@@ -173,12 +210,12 @@ namespace BBDD{
             }
         }
 
-        public IEnumerator IsMazeFinished(int id)
+        public IEnumerator AskIfMazeFinished(int id)
         {
             WWWForm form = new WWWForm();
             //Data we want to validate in php
             form.AddField("idMaze", id);
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UpdateMaze.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/AskIfMazeFinished.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -228,5 +265,114 @@ namespace BBDD{
                 }
             }
         }
+
+        public IEnumerator CreateMessages(string message, int userId,string position,int chunk,string date, int idMaze)
+        {
+            WWWForm form = new WWWForm();
+            //Data we want to validate in php
+            form.AddField("message", message);
+            form.AddField("user", userId);
+            form.AddField("position", position);
+            form.AddField("chunk", chunk);
+            form.AddField("date", date);
+            form.AddField("idMaze", idMaze);
+
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateMessage.php", form))
+            {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.error);
+                }
+                if (www.downloadHandler.text.Contains("Error"))
+                {
+                    ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.error);
+                }
+                else
+                {
+                    Debug.Log(www.downloadHandler.text);
+                    string jsonArrayString = www.downloadHandler.text;
+                    JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
+
+                    for (int i = 0; i < jsonArray.Count; i++)
+                    {
+                        //Coger info del mensaje que se acaba de crear
+
+                    }
+                }
+            }
+        }
+
+        public IEnumerator CreateTraps(int idMaze)
+        {
+            WWWForm form = new WWWForm();
+            //Data we want to validate in php
+            form.AddField("MAZE", idMaze);
+
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateTraps.php", form))
+            {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.error);
+                }
+                if (www.downloadHandler.text.Contains("Error"))
+                {
+                    ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.error);
+                }
+                else
+                {
+                    Debug.Log(www.downloadHandler.text);
+                    string jsonArrayString = www.downloadHandler.text;
+                    JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
+
+                    for (int i = 0; i < jsonArray.Count; i++)
+                    {
+                        //Coger info de la trampa que se acaba de crear
+
+                    }
+                }
+            }
+        }
+        public IEnumerator GetLeaderboard()
+        {
+            WWWForm form = new WWWForm();
+
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/GetLeaderboard.php", form))
+            {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.error);
+                    ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.error);
+                    yield return null;
+                }
+                else
+                {
+                    if (www.downloadHandler.text.Contains("0"))
+                    {
+                        Debug.Log("There isn't users registered yet");
+                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError("There insn't users registered yet");
+                        yield return null;
+                    }
+                    else
+                    {
+                        Debug.Log(www.downloadHandler.text);
+
+                        string jsonArrayString = www.downloadHandler.text;
+                        JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
+                        for (int i = 0; i < jsonArray.Count; i++)
+                        {
+                           //Aqui guardar la info del leaderboard
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 }

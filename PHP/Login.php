@@ -6,13 +6,7 @@
 	$nickUser = $_POST["nick"];
 	$userPassword = $_POST["password"];
 
-	if(!$conn) 
-	{
-	    echo "la conexión no estaría funcionando<br/>";
-	    die("No pudo conectarse: " . $conn->connect_error);
-
-	}
-	else
+	if($conn) 
 	{
 		//Preventing sql injections
 		$statement = $conn->prepare("SELECT * FROM table_user WHERE NICK = ? AND PASSWORD = ?");
@@ -30,7 +24,7 @@
 			}
 			echo json_encode($data);
 		}else{
-			echo " Wrong credentials ";
+			echo "Wrong credentials";
 		}
 		
 		$conn->close();
