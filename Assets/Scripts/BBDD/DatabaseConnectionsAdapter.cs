@@ -74,7 +74,7 @@ namespace BBDD{
                         Debug.Log(www.downloadHandler.text);
                     }
 
-                    else if (www.downloadHandler.text.Contains(" New user has been created"))
+                    else
                     {
                         Login(nickname,password);
                     }

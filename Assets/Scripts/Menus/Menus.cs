@@ -46,7 +46,9 @@ public class Menus : MonoBehaviour
 
         returnToMenu1.onClick.AddListener(delegate { OpenMenu(accountMenu, false); });
         confirmAccount.onClick.AddListener(delegate { Credentials(); });
-
+        confirmAccount.onClick.AddListener(() => {
+            StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().RegisterUser(createUsername.text, createPassword.text));
+        });
 
         // Log In Menu
 
@@ -54,7 +56,7 @@ public class Menus : MonoBehaviour
         access.onClick.AddListener(delegate { Credentials(); });
         access.onClick.AddListener(delegate { OpenMenu(playMenu, true); });
         access.onClick.AddListener(() => {
-            StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().Login(usernameData, passwordData));
+            StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().Login(username.text, password.text));
         });
 
         // Play Menu
