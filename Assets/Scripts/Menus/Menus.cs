@@ -45,22 +45,33 @@ public class Menus : MonoBehaviour
         // Create Account Menu
 
         returnToMenu1.onClick.AddListener(delegate { OpenMenu(accountMenu, false); });
-        confirmAccount.onClick.AddListener(delegate { Credentials(); });
         confirmAccount.onClick.AddListener(() => {
             StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().RegisterUser(createUsername.text, createPassword.text));
         });
-
+        confirmAccount.onClick.AddListener(delegate { Credentials(); });
         // Log In Menu
 
         returnToMenu2.onClick.AddListener(delegate { OpenMenu(logInMenu, false); });
-        access.onClick.AddListener(delegate { Credentials(); });
         access.onClick.AddListener(delegate { OpenMenu(playMenu, true); });
         access.onClick.AddListener(() => {
             StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().Login(username.text, password.text));
         });
-
+        access.onClick.AddListener(delegate { Credentials(); });
         // Play Menu
 
+    }
+
+    private void Update()
+    {
+
+        if (ServiceLocator.Instance.GetService<Common.Installer>()._newAccountCreated)
+        {
+            StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().Login(createUsername.text, createPassword.text));
+            ServiceLocator.Instance.GetService<Common.Installer>().NewAccountCreatedFinished();
+        }
+
+        //globalPoints.text = ServiceLocator.Instance.GetService<UserInfo>().GetGlobalPoints();
+        //user.text = ServiceLocator.Instance.GetService<UserInfo>().GetUser();
     }
 
     void OpenMenu(GameObject menu, bool open)
@@ -88,15 +99,4 @@ public class Menus : MonoBehaviour
             print("Error de mensaje no asigno credenciales");
         }
     }
-
-
-    private void Update()
-    {
-        if (ServiceLocator.Instance.GetService<Common.Installer>()._newAccountCreated)
-        {
-            StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().Login(createUsername.text, createPassword.text));
-            ServiceLocator.Instance.GetService<Common.Installer>().NewAccountCreatedFinished();
-        }
-    }
-
 }
