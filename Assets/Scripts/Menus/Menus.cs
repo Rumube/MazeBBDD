@@ -89,5 +89,14 @@ public class Menus : MonoBehaviour
         }
     }
 
-    
+
+    private void Update()
+    {
+        if (ServiceLocator.Instance.GetService<Common.Installer>()._newAccountCreated)
+        {
+            StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().Login(createUsername.text, createPassword.text));
+            ServiceLocator.Instance.GetService<Common.Installer>().NewAccountCreatedFinished();
+        }
+    }
+
 }

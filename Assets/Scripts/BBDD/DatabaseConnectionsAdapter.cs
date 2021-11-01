@@ -9,9 +9,12 @@ namespace BBDD
 {
     public class DatabaseConnectionsAdapter : IRequestInfo
     {
+        bool newAccountCreated = false;
+        #region User
         public IEnumerator Login(string nickname, string password)
         {
             WWWForm form = new WWWForm();
+
             //Data we want to validate in php
             form.AddField("nick", nickname);
             form.AddField("password", password);
@@ -24,7 +27,6 @@ namespace BBDD
                 {
                     Debug.Log(www.error);
                     ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.error);
-                    yield return null;
                 }
                 else
                 {
@@ -32,7 +34,6 @@ namespace BBDD
                     {
                         Debug.Log(www.downloadHandler.text);
                         ServiceLocator.Instance.GetService<ErrorMessages>().ShowError("Wrong credentials");
-                        yield return null;
                     }
                     else
                     {
@@ -79,7 +80,8 @@ namespace BBDD
                     }
                     else
                     {
-                        Login(nickname, password);
+                        Debug.Log("Creo cuenta nueva");
+                        ServiceLocator.Instance.GetService<Common.Installer>().NewAccountCreated();
                     }
                 }
             }
@@ -119,42 +121,48 @@ namespace BBDD
             }
         }
 
-        public IEnumerator GetMaze()
+        public IEnumerator GetLeaderboard()
         {
             WWWForm form = new WWWForm();
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/GetMaze.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/GetLeaderboard.php", form))
             {
                 yield return www.SendWebRequest();
 
                 if (www.result != UnityWebRequest.Result.Success)
                 {
                     Debug.Log(www.error);
-                }
-                if (www.downloadHandler.text.Contains("There isn't mazes to complete"))
-                {
-                    Debug.Log("There isn't mazes to complete. Creating a new one...");
-                    //Hacer alguna viana aqui como un bool
+                    ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.error);
+                    yield return null;
                 }
                 else
                 {
-                    //Show results as text
-                    Debug.Log(www.downloadHandler.text);
-                    string jsonArrayString = www.downloadHandler.text;
-                    JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
-                    ServiceLocator.Instance.GetService<IMazeInfo>().SetInfo(jsonArray[0].AsObject["ID"], jsonArray[0].AsObject["SEED"]);
-                    ServiceLocator.Instance.GetService<IMazeInfo>().GetInfo();
-                    //for (int i = 0; i < jsonArray.Count; i++)
-                    //{
-                    //    maze.id = jsonArray[i].AsObject["ID"];
-                    //    maze.seed = jsonArray[i].AsObject["SEED"];
-                    //}
-                    yield return GetMessages(jsonArray[0].AsObject["ID"]);
+                    if (www.downloadHandler.text.Contains("There isn't users registered yet"))
+                    {
+                        Debug.Log("There isn't users registered yet");
+                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError("There insn't users registered yet");
+                        yield return null;
+                    }
+                    else
+                    {
+                        Debug.Log(www.downloadHandler.text);
+
+                        string jsonArrayString = www.downloadHandler.text;
+                        JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
+                        for (int i = 0; i < jsonArray.Count; i++)
+                        {
+                            ServiceLocator.Instance.GetService<ILeaderboard>().SetInfo(jsonArray[i].AsObject["NICK"],
+                                                                                       jsonArray[i].AsObject["GLOBAL_POINTS"]);
+                        }
+                    }
                 }
             }
-
         }
 
+
+        #endregion
+
+        #region Maze
         public IEnumerator CreateMaze(int seed)
         {
             WWWForm form = new WWWForm();
@@ -182,6 +190,37 @@ namespace BBDD
                 }
             }
         }
+        public IEnumerator GetMaze()
+        {
+            WWWForm form = new WWWForm();
+
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/GetMaze.php", form))
+            {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.error);
+                }
+                if (www.downloadHandler.text.Contains("There isn't mazes to complete"))
+                {
+                    Debug.Log("There isn't mazes to complete. Creating a new one...");
+                    //Hacer alguna viana aqui como un bool
+                }
+                else
+                {
+                    //Show results as text
+                    Debug.Log(www.downloadHandler.text);
+                    string jsonArrayString = www.downloadHandler.text;
+                    JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
+                    ServiceLocator.Instance.GetService<IMazeInfo>().SetInfo(jsonArray[0].AsObject["ID"], jsonArray[0].AsObject["SEED"]);
+                    ServiceLocator.Instance.GetService<IMazeInfo>().GetInfo();
+                    yield return GetMessages(jsonArray[0].AsObject["ID"]);
+                }
+            }
+
+        }
+
         public IEnumerator UpdateMaze(int id)
         {
             WWWForm form = new WWWForm();
@@ -226,6 +265,52 @@ namespace BBDD
                 string result = www.downloadHandler.text;
             }
         }
+        #endregion
+
+        #region Message
+        public IEnumerator CreateMessages(string message, int userId, string position, int chunk, string date, int idMaze)
+        {
+            WWWForm form = new WWWForm();
+            //Data we want to validate in php
+            form.AddField("message", message);
+            form.AddField("user", userId);
+            form.AddField("position", position);
+            form.AddField("chunk", chunk);
+            form.AddField("date", date);
+            form.AddField("idMaze", idMaze);
+
+            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateMessage.php", form))
+            {
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.error);
+                }
+                if (www.downloadHandler.text.Contains("Error"))
+                {
+                    ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.error);
+                }
+                else
+                {
+                    Debug.Log(www.downloadHandler.text);
+                    string jsonArrayString = www.downloadHandler.text;
+                    JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
+
+                    for (int i = 0; i < jsonArray.Count; i++)
+                    {
+                        ServiceLocator.Instance.GetService<IMessage>().SetInfo(jsonArray[i].AsObject["ID"],
+                                                                                jsonArray[i].AsObject["MESSAGE"],
+                                                                                jsonArray[i].AsObject["USER"],
+                                                                                jsonArray[i].AsObject["POSITION"],
+                                                                                jsonArray[i].AsObject["CHUNK"],
+                                                                                jsonArray[i].AsObject["DATE"]);
+                        ServiceLocator.Instance.GetService<IMessage>().GetInfo(i);
+
+                    }
+                }
+            }
+        }
 
         public IEnumerator GetMessages(int idMaze)
         {
@@ -266,44 +351,11 @@ namespace BBDD
             }
         }
 
-        public IEnumerator CreateMessages(string message, int userId,string position,int chunk,string date, int idMaze)
-        {
-            WWWForm form = new WWWForm();
-            //Data we want to validate in php
-            form.AddField("message", message);
-            form.AddField("user", userId);
-            form.AddField("position", position);
-            form.AddField("chunk", chunk);
-            form.AddField("date", date);
-            form.AddField("idMaze", idMaze);
+     
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateMessage.php", form))
-            {
-                yield return www.SendWebRequest();
+        #endregion
 
-                if (www.result != UnityWebRequest.Result.Success)
-                {
-                    Debug.Log(www.error);
-                }
-                if (www.downloadHandler.text.Contains("Error"))
-                {
-                    ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.error);
-                }
-                else
-                {
-                    Debug.Log(www.downloadHandler.text);
-                    string jsonArrayString = www.downloadHandler.text;
-                    JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
-
-                    for (int i = 0; i < jsonArray.Count; i++)
-                    {
-                        //Coger info del mensaje que se acaba de crear
-
-                    }
-                }
-            }
-        }
-
+        #region Trap
         public IEnumerator CreateTraps(int idMaze)
         {
             WWWForm form = new WWWForm();
@@ -336,44 +388,12 @@ namespace BBDD
                 }
             }
         }
-        public IEnumerator GetLeaderboard()
-        {
-            WWWForm form = new WWWForm();
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/GetLeaderboard.php", form))
-            {
-                yield return www.SendWebRequest();
-
-                if (www.result != UnityWebRequest.Result.Success)
-                {
-                    Debug.Log(www.error);
-                    ServiceLocator.Instance.GetService<ErrorMessages>().ShowError(www.error);
-                    yield return null;
-                }
-                else
-                {
-                    if (www.downloadHandler.text.Contains("0"))
-                    {
-                        Debug.Log("There isn't users registered yet");
-                        ServiceLocator.Instance.GetService<ErrorMessages>().ShowError("There insn't users registered yet");
-                        yield return null;
-                    }
-                    else
-                    {
-                        Debug.Log(www.downloadHandler.text);
-
-                        string jsonArrayString = www.downloadHandler.text;
-                        JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
-                        for (int i = 0; i < jsonArray.Count; i++)
-                        {
-                            ServiceLocator.Instance.GetService<ILeaderboard>().SetInfo(jsonArray[i].AsObject["NICK"],
-                                                                                       jsonArray[i].AsObject["GLOBAL_POINTS"]);
-                        }
-                    }
-                }
-            }
-        }
+        #endregion
 
 
+
+
+    
     }
 }

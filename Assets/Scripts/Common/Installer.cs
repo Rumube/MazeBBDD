@@ -9,6 +9,8 @@ namespace Common{
     {
         public UI.UI _ui;
         public Leaderboard _leaderboard;
+
+        public bool _newAccountCreated = false;
         private void Awake()
         {
             var databaseConnectionAdapter = new DatabaseConnectionsAdapter();
@@ -29,6 +31,8 @@ namespace Common{
             ServiceLocator.Instance.RegisterService(_ui);
 
             ServiceLocator.Instance.RegisterService<ILeaderboard>(_leaderboard);
+
+            ServiceLocator.Instance.RegisterService(this);
         }
 
         private void Start()
@@ -36,6 +40,16 @@ namespace Common{
             //No recuerdo para que era esto
             ServiceLocator.Instance.GetService<IUserInfo>().Init();
 
+        }
+
+        public void NewAccountCreated()
+        {
+            _newAccountCreated = true;
+        }
+
+        public void NewAccountCreatedFinished()
+        {
+            _newAccountCreated = false;
         }
     }
 }

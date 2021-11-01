@@ -19,7 +19,7 @@
 			}
 			echo json_encode($data);
 		}else{
-			echo "0";
+			echo "There isn't users registered yet";
 		}
 		
 		$conn->close();
