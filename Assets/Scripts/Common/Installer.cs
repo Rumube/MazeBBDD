@@ -9,8 +9,10 @@ namespace Common{
     {
         public UI.UI _ui;
         public Leaderboard _leaderboard;
+        public MazeRender _mazeRender;
 
         public bool _newAccountCreated = false;
+        public bool _getMazeIniciated = false;
         private void Awake()
         {
             var databaseConnectionAdapter = new DatabaseConnectionsAdapter();
@@ -33,6 +35,8 @@ namespace Common{
             ServiceLocator.Instance.RegisterService<ILeaderboard>(_leaderboard);
 
             ServiceLocator.Instance.RegisterService(this);
+
+            ServiceLocator.Instance.RegisterService(_mazeRender);
         }
 
         private void Start()
@@ -50,6 +54,16 @@ namespace Common{
         public void NewAccountCreatedFinished()
         {
             _newAccountCreated = false;
+        }
+
+        public void GetMazeCompleted()
+        {
+            _getMazeIniciated = false;
+        }
+
+        public void GetMazeIniciated()
+        {
+            _getMazeIniciated = true;
         }
     }
 }

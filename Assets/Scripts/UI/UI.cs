@@ -35,6 +35,10 @@ namespace UI{
              RegisterUserButton.onClick.AddListener(() =>{
                 StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().RegisterUser(usernameInput.text, passwordInput.text));
             });
+            play.onClick.AddListener(() =>
+            {
+                StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().GetMaze());
+            });
         }
 
         private void Update()

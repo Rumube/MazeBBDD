@@ -386,7 +386,7 @@ MonoBehaviour:
   seed_UI_Text: {fileID: 1095528343}
   width: 8
   height: 8
-  seed: 9999
+  seed: 9090
   size: 1
   wallPrefab: {fileID: 1725988296619016278, guid: 8242b497e5ba8fa4cbd14a4ece2142fb, type: 3}
   floorPrefab: {fileID: 4909371906585029632, guid: a943f5830da966d40bd5202ca2d42355, type: 3}
@@ -394,6 +394,7 @@ MonoBehaviour:
   start: {fileID: 6947973045779567255, guid: 903413adbc741904d8d0b24c825cd3e9, type: 3}
   finish: {fileID: 5830482095181152028, guid: a2075814c22d9994c9ef0f62adfe7936, type: 3}
   porcenTrampas: 70
+  test: 1
 --- !u!4 &671842466
 Transform:
   m_ObjectHideFlags: 0

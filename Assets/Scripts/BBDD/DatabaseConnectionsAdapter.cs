@@ -215,6 +215,7 @@ namespace BBDD
                     JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
                     ServiceLocator.Instance.GetService<IMazeInfo>().SetInfo(jsonArray[0].AsObject["ID"], jsonArray[0].AsObject["SEED"]);
                     ServiceLocator.Instance.GetService<IMazeInfo>().GetInfo();
+                    ServiceLocator.Instance.GetService<Common.Installer>()._getMazeIniciated = true;
                     yield return GetMessages(jsonArray[0].AsObject["ID"]);
                 }
             }

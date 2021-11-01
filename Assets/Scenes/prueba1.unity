@@ -1198,6 +1198,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396368791}
   m_CullTransparentMesh: 1
+--- !u!1 &405335567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 405335568}
+  m_Layer: 0
+  m_Name: Traps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &405335568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405335567}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1148310966}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &456776159
 GameObject:
   m_ObjectHideFlags: 0
@@ -3423,6 +3453,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132228737}
   m_CullTransparentMesh: 1
+--- !u!1 &1148310964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1148310966}
+  - component: {fileID: 1148310965}
+  m_Layer: 0
+  m_Name: MazeRenderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1148310965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148310964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6354aa6de7c0fe04b9267e9db825ccfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seed_UI_Text: {fileID: 0}
+  width: 8
+  height: 8
+  seed: 9999
+  size: 1
+  wallPrefab: {fileID: 1725988296619016278, guid: 8242b497e5ba8fa4cbd14a4ece2142fb, type: 3}
+  floorPrefab: {fileID: 4909371906585029632, guid: a943f5830da966d40bd5202ca2d42355, type: 3}
+  trapGO: {fileID: 1419131008155603311, guid: 890f7e04c8dd9e54ea2c99d5ee0b843d, type: 3}
+  start: {fileID: 6947973045779567255, guid: 903413adbc741904d8d0b24c825cd3e9, type: 3}
+  finish: {fileID: 5830482095181152028, guid: a2075814c22d9994c9ef0f62adfe7936, type: 3}
+  porcenTrampas: 70
+--- !u!4 &1148310966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148310964}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 405335568}
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1169721336
 GameObject:
   m_ObjectHideFlags: 0
@@ -5178,6 +5263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ui: {fileID: 1545386139}
   _leaderboard: {fileID: 0}
+  _mazeRender: {fileID: 1148310965}
   _newAccountCreated: 0
 --- !u!1 &1554116356
 GameObject:

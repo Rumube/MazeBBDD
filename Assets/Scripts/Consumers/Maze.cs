@@ -17,5 +17,10 @@ public class Maze : IMazeInfo
     {
         Debug.Log("Maze id: "+_id+" seed: "+_seed);
     }
+
+    public int getSeed()
+    {
+        return _seed;
+    }
     
 }

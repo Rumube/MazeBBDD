@@ -6,4 +6,6 @@ public interface IMazeInfo
 {
     public void SetInfo(int id, int seed);
     public void GetInfo();
+
+    public int getSeed();
 }

@@ -42,17 +42,31 @@ public class MazeRender : MonoBehaviour
     private int porcenTrampas;
     private Vector2 lastPosition;
 
+    public bool test;
+
     // Start is called before the first frame update
     void Start()
     {
+        if (test)
+        {
+            var maze = MazeGenerator.Generate(width, height, seed);
+            seed_UI_Text.text = "Seed: " + seed;
+            Draw(maze);
+        }
+    }
+
+    public void startDraw()
+    {
+        seed = ServiceLocator.Instance.GetService<IMazeInfo>().getSeed();
         var maze = MazeGenerator.Generate(width, height, seed);
-        seed_UI_Text.text = "Seed: " + seed;
+        //seed_UI_Text.text = "Seed: " + seed;
         Draw(maze);
     }
 
-    private void Draw(WallState[,] maze)
+    public void Draw(WallState[,] maze)
     {
         var rng = new System.Random(seed);
+        Debug.Log("SEED: " + seed);
         var floor = Instantiate(floorPrefab, transform);
         floor.localScale = new Vector3(width / 2, 1, height/ 2);
 
@@ -125,6 +139,11 @@ public class MazeRender : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (ServiceLocator.Instance.GetService<Common.Installer>()._getMazeIniciated && !test)
+        {
+            ServiceLocator.Instance.GetService<Common.Installer>()._getMazeIniciated = false;
+            startDraw();
+        }
     }
+
 }
