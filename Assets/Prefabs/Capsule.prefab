@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 3318369959912126008}
   - component: {fileID: 3318369959912126009}
   - component: {fileID: 6944308613937845368}
+  - component: {fileID: 3095547625316761154}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Player
@@ -143,8 +144,36 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &3095547625316761154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3318369959912126010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754809aa21d0f1841bdde166f7525dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCamera: {fileID: 3318369960897458359}
+  groundCheck: {fileID: 3318369959602225310}
+  groundRadius: 0.12
+  walkSpeed: 1.3
+  crouchSpeed: 0.5
+  sensitivity: 500
+  jumpForce: 3
+  signPrefab: {fileID: 3456873611531349150, guid: 9ce276dc3a6b50e4aac885ab6121c2df, type: 3}
+  readingWindow: {fileID: 0}
+  writingWindow: {fileID: 0}
+  ePrompt: {fileID: 0}
+  leftButton: {fileID: 0}
+  rightButton: {fileID: 0}
+  canWrite: 1
+  isReading: 0
+  isWriting: 0
 --- !u!1 &3318369960897096855
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +190,7 @@ GameObject:
   - component: {fileID: 298310274}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,11 +276,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3318369960897096855}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 754809aa21d0f1841bdde166f7525dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transformCamera: {fileID: 0}
   groundCheck: {fileID: 3318369959602225310}
   groundRadius: 0.12
   walkSpeed: 1.3
@@ -360,6 +390,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7413659883413353598, guid: 9380f34c10f5fe34e863c769353585c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413659883413514333, guid: 9380f34c10f5fe34e863c769353585c0, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7413659883413514334, guid: 9380f34c10f5fe34e863c769353585c0, type: 3}

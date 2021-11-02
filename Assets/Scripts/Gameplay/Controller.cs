@@ -9,6 +9,7 @@ public class Controller : MonoBehaviour
     Transform player;
     Rigidbody rb;
     float xRotation;
+    public Transform transformCamera;
 
     [Header("Movement")]
     public Transform groundCheck;
@@ -32,6 +33,12 @@ public class Controller : MonoBehaviour
     {
         #region References
 
+        readingWindow = GameObject.Find("Read");
+        writingWindow = GameObject.Find("Write");
+        ePrompt = GameObject.Find("E Prompt");
+        leftButton = GameObject.Find("Prev").GetComponent<Button>();
+        rightButton = GameObject.Find("Next").GetComponent<Button>();
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = player.gameObject.GetComponent<Rigidbody>();
 
@@ -41,9 +48,14 @@ public class Controller : MonoBehaviour
         readingText = readingWindow.GetComponentInChildren<Text>();
         writingText = writingWindow.transform.Find("InputField/Text").gameObject.GetComponent<Text>();
 
+        writingWindow.SetActive(false);
+        leftButton.gameObject.SetActive(false);
+        rightButton.gameObject.SetActive(false);
+        readingWindow.SetActive(false);
+
         #endregion References
 
-        transform.localPosition = new Vector3(0, player.localScale.y / 2, 0);
+        transformCamera.localPosition = new Vector3(0, player.localScale.y / 2, 0);
 
         leftButton.onClick.AddListener(PreviousMessage);
         rightButton.onClick.AddListener(NextMessage);
@@ -100,14 +112,14 @@ public class Controller : MonoBehaviour
             {
                 col.height *= 0.5f;
                 col.center = new Vector3(0, -player.localScale.y / 2, 0);
-                transform.localPosition = new Vector3(0, transform.position.y - player.localScale.y / 2, 0);
+                transformCamera.localPosition = new Vector3(0, transformCamera.position.y - player.localScale.y / 2, 0);
                 speed = crouchSpeed;
             }
             else
             {
                 col.height = walkHeight;
                 col.center = Vector3.zero;
-                transform.localPosition = new Vector3(0, transform.position.y + player.localScale.y / 2, 0);
+                transformCamera.localPosition = new Vector3(0, transformCamera.position.y + player.localScale.y / 2, 0);
                 speed = walkSpeed;
             }
         }
@@ -121,7 +133,7 @@ public class Controller : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f); //Y rotation
+        transformCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f); //Y rotation
         player.Rotate(Vector3.up * mouseX); //X rotation
     }
 
@@ -132,7 +144,7 @@ public class Controller : MonoBehaviour
         int layerMask = 1 << 6 | 1 << 7 | 1 << 8;
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(transformCamera.position, transformCamera.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
         {
             if (hit.transform.gameObject.layer != LayerMask.NameToLayer("Floor"))
             {
@@ -174,6 +186,8 @@ public class Controller : MonoBehaviour
             mySign.GetComponentInChildren<Message>().message = writingText.text;
             WritingUI(false);
             canWrite = true;
+            Consumer.Message newMessage = new Consumer.Message(writingText.text, ServiceLocator.Instance.GetService<IUserInfo>().GetId(), mySign.transform.position.ToString());
+            ServiceLocator.Instance.GetService<IPullMessage>().updatePullMessages(newMessage);
         }
 
         #endregion Instantiate Sign
@@ -194,7 +208,7 @@ public class Controller : MonoBehaviour
         int layerMask = 1 << 7;
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(transformCamera.position, transformCamera.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
         {
             sign.transform.localRotation = Quaternion.LookRotation(hit.normal);
             sign.transform.position = hit.point;
@@ -222,7 +236,7 @@ public class Controller : MonoBehaviour
             readingWindow.SetActive(isReading);
         }
 
-        if (isReading) DisplayMessages(hit.transform.gameObject);
+        if (isReading) DisplayMessages(hit.transform.parent.gameObject);
     }
     void DisplayMessages(GameObject sign)
     {
@@ -276,4 +290,13 @@ public class Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Rejilla")
+        {
+            Debug.Log("Update");
+        }
+    }
+
 }

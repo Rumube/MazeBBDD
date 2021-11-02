@@ -44,6 +44,11 @@ public class MazeRender : MonoBehaviour
 
     public bool test;
 
+    [Header("Player")]
+    [SerializeField]
+    private GameObject player;
+    private Vector3 startPlayerPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +57,7 @@ public class MazeRender : MonoBehaviour
             var maze = MazeGenerator.Generate(width, height, seed);
             seed_UI_Text.text = "Seed: " + seed;
             Draw(maze);
+            GameObject newPlayer = Instantiate(player, start.transform.position, Quaternion.identity);
         }
     }
 
@@ -61,6 +67,8 @@ public class MazeRender : MonoBehaviour
         var maze = MazeGenerator.Generate(width, height, seed);
         //seed_UI_Text.text = "Seed: " + seed;
         Draw(maze);
+        GameObject newPlayer = Instantiate(player, startPlayerPos, Quaternion.identity);
+        newPlayer.transform.position = startPlayerPos + new Vector3(0, 1, 0);
     }
 
     public void Draw(WallState[,] maze)
@@ -73,8 +81,9 @@ public class MazeRender : MonoBehaviour
         GameObject newStart = Instantiate(start, transform);
         newStart.transform.position = new Vector3(-width / 2, 0, -height / 2);
         newStart.name = "Start";
+        startPlayerPos = newStart.transform.position;
 
-        for(int i = 0; i < width; ++i)
+        for (int i = 0; i < width; ++i)
         {
             for(int j = 0; j < height; ++j)
             {
@@ -142,6 +151,7 @@ public class MazeRender : MonoBehaviour
         if (ServiceLocator.Instance.GetService<Common.Installer>()._getMazeIniciated && !test)
         {
             ServiceLocator.Instance.GetService<Common.Installer>()._getMazeIniciated = false;
+            Camera.main.gameObject.SetActive(false);
             startDraw();
         }
     }

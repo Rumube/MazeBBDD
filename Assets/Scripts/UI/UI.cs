@@ -46,7 +46,6 @@ namespace UI{
             errorText.text = ServiceLocator.Instance.GetService<ErrorMessages>()._errorText;
             if (openMenu)
             {
-                print("Ento");
                 switch (menuAux)
                 {
                     case "Login":
@@ -62,6 +61,12 @@ namespace UI{
                         user.text = "Welcome, "+ServiceLocator.Instance.GetService<IUserInfo>().GetUser();
                         globalPoints.text = "Global points: "+ ServiceLocator.Instance.GetService<IUserInfo>().GetGlobalPoints();
                         break;
+
+                    case "InGame":
+                        openMenu = false;
+                        playMenu.SetActive(false);
+                        mainMenu.SetActive(false);
+                        break;
                 }
             }
         }
@@ -69,7 +74,6 @@ namespace UI{
         public void OpenSpecificMenu(string menu)
         {
             //No se cambia la variable cuando sale de aqui
-            print("Entochi");
             ServiceLocator.Instance.GetService<IUserInfo>().GetUserInfo();
             menuAux = menu;
             openMenu = true;

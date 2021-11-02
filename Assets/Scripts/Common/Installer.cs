@@ -10,6 +10,7 @@ namespace Common{
         public UI.UI _ui;
         public Leaderboard _leaderboard;
         public MazeRender _mazeRender;
+        public PullMessage _pullMessage;
 
         public bool _newAccountCreated = false;
         public bool _getMazeIniciated = false;
@@ -37,6 +38,8 @@ namespace Common{
             ServiceLocator.Instance.RegisterService(this);
 
             ServiceLocator.Instance.RegisterService(_mazeRender);
+
+            ServiceLocator.Instance.RegisterService<IPullMessage>(_pullMessage);
         }
 
         private void Start()

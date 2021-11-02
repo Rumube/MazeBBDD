@@ -4,10 +4,11 @@ using UnityEngine;
 
 public interface IUserInfo 
 {
-    public void SetInfo(string nick,string password, int current_points, int global_points);
+    public void SetInfo(int id, string nick,string password, int current_points, int global_points);
     public void Init();
     public void GetUserInfo();
     public string GetUser();
+    public int GetId();
     public string GetGlobalPoints();
 
 

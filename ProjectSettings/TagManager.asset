@@ -8,6 +8,9 @@ TagManager:
   - Trap
   - TrapController
   - PlayerMessage
+  - Start
+  - UI_Write
+  - Rejilla
   layers:
   - Default
   - TransparentFX

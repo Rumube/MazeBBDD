@@ -6,7 +6,7 @@ using UnityEngine;
     {
         public string message;
         public List<string> messages = new List<string>();
-        int id;
+        public int id;
         private void Start()
         {
             messages.Add(message);

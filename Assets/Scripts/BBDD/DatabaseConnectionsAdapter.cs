@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using SimpleJSON;
 using UI;
+using System;
 
 namespace BBDD
 {
@@ -41,7 +42,7 @@ namespace BBDD
 
                         string jsonArrayString = www.downloadHandler.text;
                         JSONArray jsonArray = JSON.Parse(jsonArrayString) as JSONArray;
-                        ServiceLocator.Instance.GetService<IUserInfo>().SetInfo(nickname, password, jsonArray[0].AsObject["CURRENT_POINTS"], jsonArray[0].AsObject["GLOBAL_POINTS"]);
+                        ServiceLocator.Instance.GetService<IUserInfo>().SetInfo(jsonArray[0].AsObject["ID"], nickname, password, jsonArray[0].AsObject["CURRENT_POINTS"], jsonArray[0].AsObject["GLOBAL_POINTS"]);
                         ServiceLocator.Instance.GetService<IUserInfo>().GetUserInfo();
                         ServiceLocator.Instance.GetService<UI.UI>().OpenSpecificMenu("Play");
                     }
@@ -216,6 +217,7 @@ namespace BBDD
                     ServiceLocator.Instance.GetService<IMazeInfo>().SetInfo(jsonArray[0].AsObject["ID"], jsonArray[0].AsObject["SEED"]);
                     ServiceLocator.Instance.GetService<IMazeInfo>().GetInfo();
                     ServiceLocator.Instance.GetService<Common.Installer>()._getMazeIniciated = true;
+                    ServiceLocator.Instance.GetService<UI.UI>().OpenSpecificMenu("InGame");
                     yield return GetMessages(jsonArray[0].AsObject["ID"]);
                 }
             }
@@ -269,7 +271,7 @@ namespace BBDD
         #endregion
 
         #region Message
-        public IEnumerator CreateMessages(string message, int userId, string position, int chunk, string date, int idMaze)
+        public IEnumerator CreateMessages(string message, int userId, string position, int chunk, System.DateTime date, int idMaze)
         {
             WWWForm form = new WWWForm();
             //Data we want to validate in php
@@ -277,7 +279,7 @@ namespace BBDD
             form.AddField("user", userId);
             form.AddField("position", position);
             form.AddField("chunk", chunk);
-            form.AddField("date", date);
+            form.AddField("date", date.ToString());
             form.AddField("idMaze", idMaze);
 
             using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateMessage.php", form))
@@ -303,9 +305,8 @@ namespace BBDD
                         ServiceLocator.Instance.GetService<IMessage>().SetInfo(jsonArray[i].AsObject["ID"],
                                                                                 jsonArray[i].AsObject["MESSAGE"],
                                                                                 jsonArray[i].AsObject["USER"],
-                                                                                jsonArray[i].AsObject["POSITION"],
-                                                                                jsonArray[i].AsObject["CHUNK"],
-                                                                                jsonArray[i].AsObject["DATE"]);
+                                                                                jsonArray[i].AsObject["POSITION"]
+                                                                                );
                         ServiceLocator.Instance.GetService<IMessage>().GetInfo(i);
 
                     }
@@ -339,14 +340,10 @@ namespace BBDD
 
                     for (int i = 0; i < jsonArray.Count; i++)
                     {
-                        ServiceLocator.Instance.GetService<IMessage>().SetInfo(jsonArray[i].AsObject["ID"],
-                                                                               jsonArray[i].AsObject["MESSAGE"],
-                                                                               jsonArray[i].AsObject["USER"],
-                                                                               jsonArray[i].AsObject["POSITION"],
-                                                                               jsonArray[i].AsObject["CHUNK"],
-                                                                               jsonArray[i].AsObject["DATE"]);
-                        ServiceLocator.Instance.GetService<IMessage>().GetInfo(i);
+                        Consumer.Message newMessage = new Consumer.Message(jsonArray[i].AsObject["ID"], jsonArray[i].AsObject["MESSAGE"], 
+                            jsonArray[i].AsObject["USER"], jsonArray[i].AsObject["POSITION"]);
 
+                        ServiceLocator.Instance.GetService<IPullMessage>().addToList(newMessage);
                     }
                 }
             }

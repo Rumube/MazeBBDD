@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Consumer
 {
-    public class Message : MonoBehaviour, IMessage
+    public class Message : IMessage
     {
         public int _id { get; private set; }
         public string _msg { get; private set; }
         public int _user { get; private set; }
         public string _position { get; private set; }
-        public int _chunk { get; private set; }
-        public string _date { get; private set; }
 
         public List<string> messages = new List<string>();
 
-        //public List<Message> _messages = new List<Message>();
         public Message()
         {
 
@@ -25,30 +22,34 @@ namespace Consumer
             messages.Add(_msg);
         }
 
-        public Message(int id, string msg, int user, string position, int chunk, string date)
+        public Message(int id, string msg, int user, string position)
         {
             _id = id;
             _msg = msg;
             _user = user;
             _position = position;
-            _chunk = chunk;
-            _date = date;
         }
-        public void SetInfo(int id, string msg, int user, string position, int chunk, string date)
+
+        public Message(string msg, int user, string position)
+        {
+            _msg = msg;
+            _user = user;
+            _position = position;
+        }
+
+        public void SetInfo(int id, string msg, int user, string position)
         {
             _id = id;
             _msg = msg;
             _user = user;
             _position = position;
-            _chunk = chunk;
-            _date = date;
         }
 
         public void GetInfo(int index)
         {
-            Debug.Log("Message id: " + _id + " message: " + _msg + " user_: " + _user + " position: " + _position + " chunk: " + _chunk + " date: " + _date);
+            Debug.Log("Message id: " + _id + " message: " + _msg + " user_: " + _user + " position: " + _position);
         }
-
+        /*
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.layer == LayerMask.NameToLayer("Message"))
@@ -66,6 +67,7 @@ namespace Consumer
                 else Destroy(transform.parent.gameObject);
             }
         }
+        */
 
     }
 }

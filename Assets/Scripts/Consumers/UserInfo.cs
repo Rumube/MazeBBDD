@@ -9,6 +9,7 @@ public class UserInfo : IUserInfo
     public string _password { get; private set; }
     public int _current_points { get; private set; }
     public int _global_points { get; private set; }
+    public int _id { get; private set; }
 
     public void Init()
     {
@@ -17,8 +18,9 @@ public class UserInfo : IUserInfo
 
         };
     }
-    public void SetInfo(string nick, string password, int current_points, int global_points)
+    public void SetInfo(int id, string nick, string password, int current_points, int global_points)
     {
+        _id = id;
         _nick = nick;
         _password = password;
         _current_points = current_points;
@@ -26,12 +28,17 @@ public class UserInfo : IUserInfo
     }
     public void GetUserInfo()
     {
-        Debug.Log("New user login: "+ _nick + " pass: " + _password + " curr: " +_current_points+ "glo: "+_global_points );
+        Debug.Log("New user login: "+ _nick + " id: " + _id + " pass: " + _password + " curr: " +_current_points+ "glo: "+_global_points );
     }
 
     public string GetUser()
     {
         return _nick;
+    }
+    
+    public int GetId()
+    {
+        return _id;
     }
 
     public string GetGlobalPoints()
