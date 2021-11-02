@@ -12,7 +12,7 @@ namespace BBDD{
         public IEnumerator UpdateMaze(int id);
         public IEnumerator AskIfMazeFinished(int id);
         public IEnumerator GetMessages(int idMaze);
-        public IEnumerator CreateMessages(string message, int userId, string position, int chunk, System.DateTime date, int idMaze);
+        public IEnumerator CreateMessages(string message, int userId, string position, int idMaze);
         public IEnumerator CreateTraps(int idMaze);
         public IEnumerator GetLeaderboard();
     }

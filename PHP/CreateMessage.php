@@ -6,8 +6,6 @@ require 'ConnectionSettings.php';
 $message= $_POST["message"];
 $user = $_POST["user"];
 $position = $_POST["position"];
-$chunk = $_POST["chunk"];
-$date = $_POST["date"];
 $idMaze = $_POST["idMaze"];
 
 	if(!$conn) {
@@ -16,13 +14,13 @@ $idMaze = $_POST["idMaze"];
 
 	}else{
 		//Preventing sql injections
-			$statement = $conn->prepare("INSERT INTO table_message(MESSAGE,USER,POSITION,CHUNK,DATE,MAZE) VALUES(?,?,?,?,?,?)");
+			$statement = $conn->prepare("INSERT INTO table_message(MESSAGE,USER,POSITION,MAZE) VALUES(?,?,?,?)");
 
-			$statement->bind_param('sisisi',$message, $user, $position, $chunk, $date, $idMaze);
+			$statement->bind_param('sisi',$message, $user, $position, $idMaze);
 
 			if($statement->execute()){
 				//Selecciona la ultima fila creada
-				$statement2 = $conn->prepare("SELECT ID,MESSAGE,USER,POSITION,CHUNK,DATE,MAZE FROM table_message WHERE MAZE = ? ORDER BY ID DESC LIMIT 1");
+				$statement2 = $conn->prepare("SELECT ID,MESSAGE,USER,POSITION,MAZE FROM table_message WHERE MAZE = ? ORDER BY ID DESC LIMIT 1");
 				$statement2->bind_param("i",$idMaze);
 				$statement2->execute();
 

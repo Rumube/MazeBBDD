@@ -266,20 +266,26 @@ namespace BBDD
                     Debug.Log(www.error);
                 }
                 string result = www.downloadHandler.text;
+                if (www.downloadHandler.text.Contains("0"))
+                {
+                    ServiceLocator.Instance.GetService<IMazeInfo>().setCompleted(false);
+                }
+                else if(www.downloadHandler.text.Contains("1"))
+                {
+                    ServiceLocator.Instance.GetService<IMazeInfo>().setCompleted(true);
+                }
             }
         }
         #endregion
 
         #region Message
-        public IEnumerator CreateMessages(string message, int userId, string position, int chunk, System.DateTime date, int idMaze)
+        public IEnumerator CreateMessages(string message, int userId, string position, int idMaze)
         {
             WWWForm form = new WWWForm();
             //Data we want to validate in php
             form.AddField("message", message);
             form.AddField("user", userId);
             form.AddField("position", position);
-            form.AddField("chunk", chunk);
-            form.AddField("date", date.ToString());
             form.AddField("idMaze", idMaze);
 
             using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateMessage.php", form))

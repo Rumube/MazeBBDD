@@ -8,4 +8,7 @@ public interface IMazeInfo
     public void GetInfo();
 
     public int getSeed();
+    public int getId();
+    public bool getCompleted();
+    public void setCompleted(bool isCompleted);
 }

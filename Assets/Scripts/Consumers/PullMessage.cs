@@ -8,7 +8,6 @@ public class PullMessage : MonoBehaviour, IPullMessage
 {
 
     public List<Consumer.Message> pullMessages = new List<Consumer.Message>();
-    [SerializeField]
     public List<Consumer.Message> pushMessages = new List<Consumer.Message>();
     public GameObject singGO;
 
@@ -48,9 +47,9 @@ public class PullMessage : MonoBehaviour, IPullMessage
         }
     }
 
-    public void updatePullMessages(Consumer.Message newMessage)
-    {
-        pullMessages.Add(newMessage);
+    public void updatePushMessages(Consumer.Message newMessage)
+    {//SE GUARDAN DATOS HACIA LA BASE DE DATOS
+        pushMessages.Add(newMessage);
     }
 
     private Vector3 splitPositio(string stringV3)
@@ -63,6 +62,16 @@ public class PullMessage : MonoBehaviour, IPullMessage
             float.Parse(coordenadas[1], CultureInfo.InvariantCulture), float.Parse(coordenadas[2], CultureInfo.InvariantCulture));
         Debug.Log("Coordenadas --> " + newVector);
         return newVector;
+    }
+
+    public void clearPullList()
+    {
+        pullMessages.Clear();
+    }
+
+    public List<Consumer.Message> getPushList()
+    {
+        return pushMessages;
     }
 
 }

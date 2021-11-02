@@ -6,5 +6,7 @@ using Consumer;
 public interface IPullMessage
 {
     public void addToList(Consumer.Message newMessage);
-    public void updatePullMessages(Consumer.Message newMessage);
+    public void updatePushMessages(Consumer.Message newMessage);
+    public void clearPullList();
+    public List<Consumer.Message> getPushList();
 }

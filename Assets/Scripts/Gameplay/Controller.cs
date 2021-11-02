@@ -187,7 +187,7 @@ public class Controller : MonoBehaviour
             WritingUI(false);
             canWrite = true;
             Consumer.Message newMessage = new Consumer.Message(writingText.text, ServiceLocator.Instance.GetService<IUserInfo>().GetId(), mySign.transform.position.ToString());
-            ServiceLocator.Instance.GetService<IPullMessage>().updatePullMessages(newMessage);
+            ServiceLocator.Instance.GetService<IPullMessage>().updatePushMessages(newMessage);
         }
 
         #endregion Instantiate Sign
@@ -295,7 +295,7 @@ public class Controller : MonoBehaviour
     {
         if(other.gameObject.tag == "Rejilla")
         {
-            Debug.Log("Update");
+            StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().UpdateGame());
         }
     }
 

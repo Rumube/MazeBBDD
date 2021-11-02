@@ -6,7 +6,7 @@ public class Maze : IMazeInfo
 {
     public int _id{get; private set;}
     public int _seed{get; private set;}
-
+    public bool _completed;
     public void SetInfo(int id, int seed)
     {
         _id = id;
@@ -23,4 +23,19 @@ public class Maze : IMazeInfo
         return _seed;
     }
     
+    public int getId()
+    {
+        return _id;
+    }
+
+    public bool getCompleted()
+    {
+        return _completed;
+    }
+
+    public void setCompleted(bool isCompleted)
+    {
+        _completed = isCompleted;
+    }
+
 }
