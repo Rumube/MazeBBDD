@@ -46,6 +46,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public IEnumerator playerDead()
+    {
+        yield return UpdateGame();
+        if (isCompleted)
+        {
+            //TERMINADO
+        }
+        else
+        {
+            Transform playerT = GameObject.FindGameObjectWithTag("Player").transform;
+            playerT.position = ServiceLocator.Instance.GetService<MazeRender>().getStartPosition();
+        }
+    }
+
     public IEnumerator IsMazeFinised()
     {
         yield return StartCoroutine(

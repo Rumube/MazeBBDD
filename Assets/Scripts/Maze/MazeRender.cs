@@ -68,7 +68,7 @@ public class MazeRender : MonoBehaviour
         //seed_UI_Text.text = "Seed: " + seed;
         Draw(maze);
         GameObject newPlayer = Instantiate(player, startPlayerPos, Quaternion.identity);
-        newPlayer.transform.position = startPlayerPos + new Vector3(0, 1, 0);
+        newPlayer.transform.position = getStartPosition();
     }
 
     public void Draw(WallState[,] maze)
@@ -154,6 +154,16 @@ public class MazeRender : MonoBehaviour
             Camera.main.gameObject.SetActive(false);
             startDraw();
         }
+    }
+
+    public Vector3 getStartPosition()
+    {
+        return startPlayerPos + new Vector3(0, 1, 0);
+    }
+
+    public Transform getPlayerTransform()
+    {
+        return player.transform;
     }
 
 }

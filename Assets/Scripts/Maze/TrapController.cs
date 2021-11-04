@@ -18,7 +18,6 @@ public class TrapController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
         if(other.gameObject.tag == "TrapController")
         {
             Destroy(transform.parent.gameObject);

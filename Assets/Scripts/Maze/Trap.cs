@@ -55,7 +55,7 @@ public class Trap : MonoBehaviour
     void makeSaltoTrap()
     {
         tipo = Tipo.salto;
-        transform.localScale = new Vector3(0.25f, 0.5f, 1f);
+        transform.localScale = new Vector3(0.1f, 0.2f, 1f);
         gameObject.name = "SaltoTrap";
     }
 
@@ -101,6 +101,9 @@ public class Trap : MonoBehaviour
         }else if(other.gameObject.name == "Start" || other.gameObject.name == "Finish")
         {
             Destroy(gameObject);
+        }else if(other.gameObject.tag == "Player")
+        {
+            StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().playerDead());
         }
 
     }
