@@ -12,7 +12,7 @@ namespace Common{
         public MazeRender _mazeRender;
         public PullMessage _pullMessage;
         public GameManager _gameManager;
-
+        public CanvasReference _canvasReference;
         public bool _newAccountCreated = false;
         public bool _getMazeIniciated = false;
         private void Awake()
@@ -43,6 +43,8 @@ namespace Common{
             ServiceLocator.Instance.RegisterService<IPullMessage>(_pullMessage);
 
             ServiceLocator.Instance.RegisterService(_gameManager);
+
+            ServiceLocator.Instance.RegisterService<ICanvasReference>(_canvasReference);
         }
 
         private void Start()

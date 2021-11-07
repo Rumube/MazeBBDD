@@ -24,9 +24,9 @@ using UnityEngine;
                     {
                         messages.Add(msg);
                     }
-                    Destroy(collision.transform.parent.gameObject);
+                    Destroy(collision.gameObject);
                 }
-                else Destroy(transform.parent.gameObject);
+                else Destroy(gameObject);
             }
         }
     }

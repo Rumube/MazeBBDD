@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UI;
 public class Controller : MonoBehaviour
 {
     //Refs
@@ -29,17 +29,19 @@ public class Controller : MonoBehaviour
     public bool canWrite;
     public bool isReading, isWriting;
 
+    bool isDead;
+
     void Start()
     {
         #region References
 
-        readingWindow = GameObject.Find("Read");
-        writingWindow = GameObject.Find("Write");
-        ePrompt = GameObject.Find("E Prompt");
-        leftButton = GameObject.Find("Prev").GetComponent<Button>();
-        rightButton = GameObject.Find("Next").GetComponent<Button>();
+        readingWindow = ServiceLocator.Instance.GetService<ICanvasReference>().GetRead();
+        writingWindow = ServiceLocator.Instance.GetService<ICanvasReference>().GetWrite();
+        ePrompt = ServiceLocator.Instance.GetService<ICanvasReference>().GetEPrompt();
+        leftButton = ServiceLocator.Instance.GetService<ICanvasReference>().GetPrevious();
+        rightButton = ServiceLocator.Instance.GetService<ICanvasReference>().GetNext();
 
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = transform;
         rb = player.gameObject.GetComponent<Rigidbody>();
 
         speed = walkSpeed;
@@ -59,6 +61,9 @@ public class Controller : MonoBehaviour
 
         leftButton.onClick.AddListener(PreviousMessage);
         rightButton.onClick.AddListener(NextMessage);
+        isDead = false;
+
+        StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().UpdateGame(false));
     }
 
     private void Update()
@@ -76,10 +81,13 @@ public class Controller : MonoBehaviour
     #region Character Controller
     void Movement()
     {
-        Move();
-        Jump();
-        Crouch();
-        Rotation();
+        if (!isDead)
+        {
+            Move();
+            Jump();
+            Crouch();
+            Rotation();
+        }
     }
 
     void Move()
@@ -186,7 +194,13 @@ public class Controller : MonoBehaviour
             mySign.GetComponentInChildren<Message>().message = writingText.text;
             WritingUI(false);
             canWrite = true;
-            Consumer.Message newMessage = new Consumer.Message(writingText.text, ServiceLocator.Instance.GetService<IUserInfo>().GetId(), mySign.transform.position.ToString());
+
+            string signPos = mySign.transform.position.x.ToString();
+            signPos += "," + mySign.transform.position.y.ToString();
+            signPos += "," + mySign.transform.position.z.ToString();
+            signPos += "," + mySign.transform.rotation.eulerAngles.y.ToString();
+
+            Consumer.Message newMessage = new Consumer.Message(writingText.text, ServiceLocator.Instance.GetService<IUserInfo>().GetId(), signPos);
             ServiceLocator.Instance.GetService<IPullMessage>().updatePushMessages(newMessage);
         }
 
@@ -236,7 +250,7 @@ public class Controller : MonoBehaviour
             readingWindow.SetActive(isReading);
         }
 
-        if (isReading) DisplayMessages(hit.transform.parent.gameObject);
+        if (isReading) DisplayMessages(hit.transform.gameObject);
     }
     void DisplayMessages(GameObject sign)
     {
@@ -295,8 +309,21 @@ public class Controller : MonoBehaviour
     {
         if(other.gameObject.tag == "Rejilla")
         {
-            StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().UpdateGame());
+            StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().UpdateGame(false));
+        }else if (other.gameObject.tag == "Finish")
+        {
+            ServiceLocator.Instance.GetService<GameManager>().setIsCompleted(true);
+            ServiceLocator.Instance.GetService<GameManager>().UpdateGame(true);
         }
     }
 
+    public bool GetIsDead()
+    {
+        return isDead;
+    }
+
+    public void SetIsDead(bool isDead)
+    {
+        this.isDead = isDead;
+    }
 }

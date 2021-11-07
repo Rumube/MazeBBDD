@@ -14,7 +14,7 @@ public class MazeRender : MonoBehaviour
     private int width = 10;
 
     [SerializeField]
-    [Range (1,50)]
+    [Range(1, 50)]
     private int height = 10;
 
     [SerializeField]
@@ -41,13 +41,18 @@ public class MazeRender : MonoBehaviour
     [Range(1, 100)]
     private int porcenTrampas;
     private Vector2 lastPosition;
+    [SerializeField] Transform trapParent;
 
     public bool test;
 
     [Header("Player")]
     [SerializeField]
     private GameObject player;
+    GameObject currentPlayer;
     private Vector3 startPlayerPos;
+
+    [Header("Canvas")]
+    [SerializeField] GameObject gameMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -57,18 +62,26 @@ public class MazeRender : MonoBehaviour
             var maze = MazeGenerator.Generate(width, height, seed);
             seed_UI_Text.text = "Seed: " + seed;
             Draw(maze);
-            GameObject newPlayer = Instantiate(player, start.transform.position, Quaternion.identity);
+            currentPlayer = Instantiate(player, start.transform.position, Quaternion.identity);
         }
+    }
+    public int GenerateNewSeed()
+    {
+        return Random.Range(1010,9090);
     }
 
     public void startDraw()
     {
         seed = ServiceLocator.Instance.GetService<IMazeInfo>().getSeed();
         var maze = MazeGenerator.Generate(width, height, seed);
-        //seed_UI_Text.text = "Seed: " + seed;
+        seed_UI_Text.text = "Seed: " + seed;
         Draw(maze);
-        GameObject newPlayer = Instantiate(player, startPlayerPos, Quaternion.identity);
-        newPlayer.transform.position = getStartPosition();
+        gameMenu.SetActive(true);
+        for(int i = 0; i < gameMenu.transform.childCount -1; ++i){
+            gameMenu.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        currentPlayer = Instantiate(player, startPlayerPos, Quaternion.identity);
+        currentPlayer.transform.position = getStartPosition();
     }
 
     public void Draw(WallState[,] maze)
@@ -76,7 +89,7 @@ public class MazeRender : MonoBehaviour
         var rng = new System.Random(seed);
         Debug.Log("SEED: " + seed);
         var floor = Instantiate(floorPrefab, transform);
-        floor.localScale = new Vector3(width / 2, 1, height/ 2);
+        floor.localScale = new Vector3(width / 2, 1, height / 2);
 
         GameObject newStart = Instantiate(start, transform);
         newStart.transform.position = new Vector3(-width / 2, 0, -height / 2);
@@ -85,7 +98,7 @@ public class MazeRender : MonoBehaviour
 
         for (int i = 0; i < width; ++i)
         {
-            for(int j = 0; j < height; ++j)
+            for (int j = 0; j < height; ++j)
             {
 
                 int probTrampas = rng.Next(0, 100);
@@ -97,7 +110,7 @@ public class MazeRender : MonoBehaviour
                 if (cell.HasFlag(WallState.UP))
                 {
                     var topWall = Instantiate(wallPrefab, transform) as Transform;
-                    topWall.position = position + new Vector3(0, 0, size/2);
+                    topWall.position = position + new Vector3(0, 0, size / 2);
                     topWall.localScale = new Vector3(size, topWall.localScale.y, topWall.localScale.z);
                 }
 
@@ -109,7 +122,7 @@ public class MazeRender : MonoBehaviour
                     leftWall.eulerAngles = new Vector3(0, 90, 0);
                 }
 
-                if(i == width - 1)
+                if (i == width - 1)
                 {
                     if (cell.HasFlag(WallState.RIGHT))
                     {
@@ -120,7 +133,7 @@ public class MazeRender : MonoBehaviour
                     }
                 }
 
-                if(j == 0)
+                if (j == 0)
                 {
                     if (cell.HasFlag(WallState.DOWN))
                     {
@@ -132,7 +145,8 @@ public class MazeRender : MonoBehaviour
 
                 if (porcenTrampas >= probTrampas)
                 {
-                    GameObject newTrap = Instantiate(trapGO, transform.Find("Traps"));
+                    
+                    GameObject newTrap = Instantiate(trapGO, trapParent);
                     newTrap.transform.position = new Vector3(-width / 2 + i, 0, -height / 2 + j);
                     int trapType = rng.Next(0, 4);
                     newTrap.GetComponent<Trap>().setTipo(trapType);
@@ -154,11 +168,35 @@ public class MazeRender : MonoBehaviour
             Camera.main.gameObject.SetActive(false);
             startDraw();
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ReInitMaze();
+        }
+    }
+    public void ReInitMaze()
+    {
+        //Destruimos muros
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.name != "Traps" && transform.GetChild(i).gameObject.name != "InvisibleRoof")
+            {
+                Destroy(transform.GetChild(i).gameObject);
+            }
+        }
+
+        //Destruimos trampas
+        for (int i = 0; i < trapParent.transform.childCount; ++i)
+        {
+            Destroy(trapParent.transform.GetChild(i).gameObject);
+        }
+        Destroy(currentPlayer);
+        startDraw();
     }
 
     public Vector3 getStartPosition()
     {
-        return startPlayerPos + new Vector3(0, 1, 0);
+        return startPlayerPos + new Vector3(0,0.5f, 0);
     }
 
     public Transform getPlayerTransform()

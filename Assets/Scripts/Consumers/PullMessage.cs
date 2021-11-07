@@ -40,7 +40,8 @@ public class PullMessage : MonoBehaviour, IPullMessage
     {
         foreach(Consumer.Message newMessage in pullMessages)
         {
-            GameObject newSing = Instantiate(singGO, splitPositio(newMessage._position), Quaternion.identity);
+            Vector4 currentPosition = splitPositio(newMessage._position);
+            GameObject newSing = Instantiate(singGO,new Vector3(currentPosition.x, currentPosition.y, currentPosition.z), Quaternion.Euler(0.0f,currentPosition.w,0.0f));
             Message messageScript = newSing.GetComponent<Message>();
             messageScript.id = newMessage._id;
             messageScript.message = newMessage._msg;
@@ -52,14 +53,14 @@ public class PullMessage : MonoBehaviour, IPullMessage
         pushMessages.Add(newMessage);
     }
 
-    private Vector3 splitPositio(string stringV3)
+    private Vector4 splitPositio(string stringV3)
     {
-        Vector3 newVector;
+        Vector4 newVector;
         Debug.Log(stringV3);
         string[] coordenadas = stringV3.Split(',');
         Debug.Log(coordenadas[1]);
-        newVector = new Vector3(float.Parse(coordenadas[0], CultureInfo.InvariantCulture), 
-            float.Parse(coordenadas[1], CultureInfo.InvariantCulture), float.Parse(coordenadas[2], CultureInfo.InvariantCulture));
+        newVector = new Vector4(float.Parse(coordenadas[0], CultureInfo.InvariantCulture), 
+            float.Parse(coordenadas[1], CultureInfo.InvariantCulture), float.Parse(coordenadas[2], CultureInfo.InvariantCulture), float.Parse(coordenadas[3], CultureInfo.InvariantCulture));
         Debug.Log("Coordenadas --> " + newVector);
         return newVector;
     }
@@ -67,6 +68,11 @@ public class PullMessage : MonoBehaviour, IPullMessage
     public void clearPullList()
     {
         pullMessages.Clear();
+    }
+
+    public void clearPushList()
+    {
+        pushMessages.Clear();
     }
 
     public List<Consumer.Message> getPushList()
