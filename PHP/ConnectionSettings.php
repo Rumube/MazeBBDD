@@ -1,8 +1,8 @@
 <?php
 	//Data from database
-	$serverName = "127.0.0.1";
+	$serverName = "88.18.57.64";
 	$db = "themaze";
-	$uid = "root";
+	$uid = "admin";
 	$pwd = "";
 
 	$conn = new mysqli( $serverName, $uid, $pwd, $db);

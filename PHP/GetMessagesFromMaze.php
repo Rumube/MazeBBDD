@@ -7,7 +7,7 @@
 
 	if($conn){
 		//Preventing sql injections
-		$statement = $conn->prepare("SELECT ID,MESSAGE,USER,POSITION,CHUNK,DATE FROM table_message WHERE MAZE = ?");
+		$statement = $conn->prepare("SELECT ID,MESSAGE,USER,POSITION FROM table_message WHERE MAZE = ?");
 
 		$statement->bind_param("i",$idMaze);
 		$statement->execute();

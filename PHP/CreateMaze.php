@@ -4,7 +4,7 @@ require 'ConnectionSettings.php';
 
 
 //Variables submited by user
-$seed = $_GET["seed"];
+$seed = $_POST["seed"];
 
 	if(!$conn) {
 	echo "la conexión no estaría funcionando<br/>";
