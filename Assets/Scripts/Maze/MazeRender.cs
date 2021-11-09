@@ -176,11 +176,6 @@ public class MazeRender : MonoBehaviour
 
             startDraw();
         }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            ReInitMaze();
-        }
     }
     public void ReInitMaze()
     {

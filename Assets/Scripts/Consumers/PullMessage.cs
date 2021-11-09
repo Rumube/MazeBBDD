@@ -25,11 +25,6 @@ public class PullMessage : MonoBehaviour, IPullMessage
         {
             Debug.Log("MENSAJE -->" + newMessage._msg);
         }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            updateMessages();
-        }
     }
 
     public void addToList(Consumer.Message newMessage)
@@ -43,7 +38,7 @@ public class PullMessage : MonoBehaviour, IPullMessage
         {
             Vector4 currentPosition = splitPositio(newMessage._position);
             GameObject newSing = Instantiate(singGO,new Vector3(currentPosition.x, currentPosition.y, currentPosition.z), Quaternion.Euler(0.0f,currentPosition.w,0.0f));
-            _messagesParent.transform.SetParent(newSing.transform);
+            newSing.transform.SetParent(_messagesParent.transform);
             Message messageScript = newSing.GetComponent<Message>();
             messageScript.id = newMessage._id;
             messageScript.message = newMessage._msg;

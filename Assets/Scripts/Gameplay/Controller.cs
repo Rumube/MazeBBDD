@@ -29,6 +29,8 @@ public class Controller : MonoBehaviour
     public bool canWrite;
     public bool isReading, isWriting;
 
+    private GameObject _messageParent;
+
     bool isDead;
 
     void Start()
@@ -66,6 +68,7 @@ public class Controller : MonoBehaviour
         StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().UpdateGame(false));
         print("Controlador jeje");
         StartCoroutine("PlayerAlive");
+        _messageParent = GameObject.FindGameObjectWithTag("MessageParent");
     }
     IEnumerator PlayerAlive()
     {
@@ -196,6 +199,7 @@ public class Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) && isWriting)
         {
             GameObject mySign = Instantiate(signPrefab);
+            mySign.transform.SetParent(_messageParent.transform);
             Orientation(mySign);
             mySign.GetComponentInChildren<Message>().message = writingText.text;
             WritingUI(false);
