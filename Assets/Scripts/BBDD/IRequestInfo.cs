@@ -16,6 +16,6 @@ namespace BBDD{
         public IEnumerator GetMessages(int idMaze);
         public IEnumerator CreateMessages(string message, int userId, string position, int idMaze);
         public IEnumerator CreateTraps(int idMaze);
-        public IEnumerator GetLeaderboard();
+        public IEnumerator GetLeaderboard(GameObject playMenu);
     }
 }

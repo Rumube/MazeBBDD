@@ -122,7 +122,7 @@ namespace BBDD
             }
         }
 
-        public IEnumerator GetLeaderboard()
+        public IEnumerator GetLeaderboard(GameObject playMenu)
         {
             WWWForm form = new WWWForm();
 
@@ -155,6 +155,7 @@ namespace BBDD
                             ServiceLocator.Instance.GetService<ILeaderboard>().SetInfo(jsonArray[i].AsObject["NICK"],
                                                                                        jsonArray[i].AsObject["GLOBAL_POINTS"]);
                         }
+                        playMenu.GetComponent<Leaderboard_ScrollView>().UpdateLeaderboard();
                     }
                 }
             }

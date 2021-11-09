@@ -60,6 +60,7 @@ namespace UI{
                         openMenu = false;
                         user.text = "Welcome, "+ServiceLocator.Instance.GetService<IUserInfo>().GetUser();
                         globalPoints.text = "Global points: "+ ServiceLocator.Instance.GetService<IUserInfo>().GetGlobalPoints();
+                        StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().GetLeaderboard(playMenu));
                         break;
 
                     case "InGame":
