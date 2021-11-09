@@ -62,10 +62,16 @@ public class Controller : MonoBehaviour
         leftButton.onClick.AddListener(PreviousMessage);
         rightButton.onClick.AddListener(NextMessage);
         isDead = false;
-
+        print("Entro en el Controlador jeje");
         StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().UpdateGame(false));
+        print("Controlador jeje");
+        StartCoroutine("PlayerAlive");
     }
-
+    IEnumerator PlayerAlive()
+    {
+        yield return new WaitForSeconds(2.0f);
+        isDead = false;
+    }
     private void Update()
     {
         if (!isReading && !isWriting)
@@ -312,8 +318,7 @@ public class Controller : MonoBehaviour
             StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().UpdateGame(false));
         }else if (other.gameObject.tag == "Finish")
         {
-            ServiceLocator.Instance.GetService<GameManager>().setIsCompleted(true);
-            ServiceLocator.Instance.GetService<GameManager>().UpdateGame(true);
+            StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().UpdateGame(true));
         }
     }
 

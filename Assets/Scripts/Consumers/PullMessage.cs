@@ -56,12 +56,9 @@ public class PullMessage : MonoBehaviour, IPullMessage
     private Vector4 splitPositio(string stringV3)
     {
         Vector4 newVector;
-        Debug.Log(stringV3);
         string[] coordenadas = stringV3.Split(',');
-        Debug.Log(coordenadas[1]);
         newVector = new Vector4(float.Parse(coordenadas[0], CultureInfo.InvariantCulture), 
             float.Parse(coordenadas[1], CultureInfo.InvariantCulture), float.Parse(coordenadas[2], CultureInfo.InvariantCulture), float.Parse(coordenadas[3], CultureInfo.InvariantCulture));
-        Debug.Log("Coordenadas --> " + newVector);
         return newVector;
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,9 +66,14 @@ public class MazeRender : MonoBehaviour
             currentPlayer = Instantiate(player, start.transform.position, Quaternion.identity);
         }
     }
+    public void StartNewMaze()
+    {
+        ReInitMaze();
+    }
+
     public int GenerateNewSeed()
     {
-        return Random.Range(1010,9090);
+        return UnityEngine.Random.Range(1010,9090);
     }
 
     public void startDraw()
@@ -165,7 +171,9 @@ public class MazeRender : MonoBehaviour
         if (ServiceLocator.Instance.GetService<Common.Installer>()._getMazeIniciated && !test)
         {
             ServiceLocator.Instance.GetService<Common.Installer>()._getMazeIniciated = false;
+
             Camera.main.gameObject.SetActive(false);
+
             startDraw();
         }
 
@@ -190,18 +198,32 @@ public class MazeRender : MonoBehaviour
         {
             Destroy(trapParent.transform.GetChild(i).gameObject);
         }
-        Destroy(currentPlayer);
+        if (currentPlayer != null)
+        {
+            Destroy(currentPlayer);
+        }
+
         startDraw();
     }
 
     public Vector3 getStartPosition()
     {
-        return startPlayerPos + new Vector3(0,0.5f, 0);
+        return startPlayerPos + new Vector3(0,0.25f, 0);
     }
 
     public Transform getPlayerTransform()
     {
         return player.transform;
+    }
+
+    public int getSeed()
+    {
+        return seed;
+    }
+
+    public void setSeed(int seed)
+    {
+        this.seed = seed;
     }
 
 }

@@ -25,15 +25,25 @@ public class GameManager : MonoBehaviour
     {
         yield return StartCoroutine(setMazeId());
         yield return StartCoroutine(IsMazeFinised());
-
+        print("Probando 123");
         if (isCompleted && isEndGame)
         {
 
             //te lo has pasado pero alguien antes tb
+            print("alguien lo paso antes que tu ");
+            //Destroy(ServiceLocator.Instance.GetService<MazeRender>().getPlayerTransform().gameObject);
         }
         else if (!isCompleted && isEndGame)
         {
-            //te lo has pasado el primero
+            print("Falocidades has ganao");
+            //Te lo has pasado el primero
+            
+            yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().UpdateMaze(mazeId));
+            ServiceLocator.Instance.GetService<MazeRender>().setSeed(ServiceLocator.Instance.GetService<MazeRender>().GenerateNewSeed());
+           yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().CreateMaze(ServiceLocator.Instance.GetService<MazeRender>().getSeed()));
+            yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().GetMaze());
+            ServiceLocator.Instance.GetService<MazeRender>().StartNewMaze();
+            //Destroy(ServiceLocator.Instance.GetService<MazeRender>().getPlayerTransform().gameObject);
         }
         else if (!isCompleted && !isEndGame)
         {
@@ -50,11 +60,13 @@ public class GameManager : MonoBehaviour
             }
             ServiceLocator.Instance.GetService<IPullMessage>().clearPushList();
             ServiceLocator.Instance.GetService<IPullMessage>().updateMessages();
+            print("fallo aqui");
         }
         else
         {
             //has muerto pero se ha completado
         }
+        print("finalizo aqui");
     }
 
     public IEnumerator playerDead()
@@ -62,9 +74,11 @@ public class GameManager : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.GetComponent<Controller>().SetIsDead(true);
         yield return UpdateGame(false);
+        print("No llego aqui");
         string message = "";
         float time = 0.0f;
         deadMenu.SetActive(true);
+ 
         if (isCompleted)
         {
             //TERMINADO
@@ -85,6 +99,7 @@ public class GameManager : MonoBehaviour
         }
         player.GetComponent<Controller>().SetIsDead(false);
         deadMenu.SetActive(false);
+
     }
 
     IEnumerator DeadMessage(string message, float seconds)
