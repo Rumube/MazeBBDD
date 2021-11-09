@@ -8,7 +8,7 @@ public class MazeRender : MonoBehaviour
 {
     public Text seed_UI_Text;
 
-    [Header("CONFIGURACIÓN")]
+    [Header("CONFIGURACIï¿½N")]
 
     [SerializeField]
     [Range(1, 50)]
@@ -187,7 +187,7 @@ public class MazeRender : MonoBehaviour
         //Destruimos muros
         for (int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).gameObject.name != "Traps" && transform.GetChild(i).gameObject.name != "InvisibleRoof")
+            if (transform.GetChild(i).gameObject.name != "Traps" && transform.GetChild(i).gameObject.name != "InvisibleRoof" && transform.GetChild(i).gameObject.name != "Messages")
             {
                 Destroy(transform.GetChild(i).gameObject);
             }

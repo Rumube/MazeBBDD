@@ -10,6 +10,7 @@ public class PullMessage : MonoBehaviour, IPullMessage
     public List<Consumer.Message> pullMessages = new List<Consumer.Message>();
     public List<Consumer.Message> pushMessages = new List<Consumer.Message>();
     public GameObject singGO;
+    public GameObject _messagesParent;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,7 @@ public class PullMessage : MonoBehaviour, IPullMessage
         {
             Vector4 currentPosition = splitPositio(newMessage._position);
             GameObject newSing = Instantiate(singGO,new Vector3(currentPosition.x, currentPosition.y, currentPosition.z), Quaternion.Euler(0.0f,currentPosition.w,0.0f));
+            _messagesParent.transform.SetParent(newSing.transform);
             Message messageScript = newSing.GetComponent<Message>();
             messageScript.id = newMessage._id;
             messageScript.message = newMessage._msg;
@@ -58,15 +60,18 @@ public class PullMessage : MonoBehaviour, IPullMessage
         Vector4 newVector;
         string[] coordenadas = stringV3.Split(',');
         newVector = new Vector4(float.Parse(coordenadas[0], CultureInfo.InvariantCulture), 
-            float.Parse(coordenadas[1], CultureInfo.InvariantCulture), float.Parse(coordenadas[2], CultureInfo.InvariantCulture), float.Parse(coordenadas[3], CultureInfo.InvariantCulture));
+        float.Parse(coordenadas[1], CultureInfo.InvariantCulture), float.Parse(coordenadas[2], CultureInfo.InvariantCulture), float.Parse(coordenadas[3], CultureInfo.InvariantCulture));
         return newVector;
     }
 
     public void clearPullList()
     {
+        for (int i = 0; i < _messagesParent.transform.childCount; i++)
+        {
+            Destroy(_messagesParent.transform.GetChild(i).gameObject);
+        }
         pullMessages.Clear();
     }
-
     public void clearPushList()
     {
         pushMessages.Clear();

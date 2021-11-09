@@ -6,9 +6,11 @@ namespace BBDD{
     {
         public IEnumerator Login(string username, string password);
         public IEnumerator RegisterUser(string username, string password);
+        //MODIFICA LOS PUNTOS
         public IEnumerator UpdateUser(string username, int currentPoints, int global_points);
         public IEnumerator GetMaze();
         public IEnumerator CreateMaze(int seed);
+        //PASA LA MAZE DE NO_COMPLETADO A COMPLETADO
         public IEnumerator UpdateMaze(int id);
         public IEnumerator AskIfMazeFinished(int id);
         public IEnumerator GetMessages(int idMaze);

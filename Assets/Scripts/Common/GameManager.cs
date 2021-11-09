@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
         print("Probando 123");
         if (isCompleted && isEndGame)
         {
-
             //te lo has pasado pero alguien antes tb
             print("alguien lo paso antes que tu ");
             //Destroy(ServiceLocator.Instance.GetService<MazeRender>().getPlayerTransform().gameObject);
@@ -49,11 +48,11 @@ public class GameManager : MonoBehaviour
         {
             print("Entre aqui");
             //CONTINUA
-            //Vaciar lista señales
+            //Vaciar lista seï¿½ales
             ServiceLocator.Instance.GetService<IPullMessage>().clearPullList();
-            //Bajar señales
+            //Bajar seï¿½ales
             yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().GetMessages(mazeId));
-            //Subir señales
+            //Subir seï¿½ales
             foreach (Consumer.Message nextMessage in ServiceLocator.Instance.GetService<IPullMessage>().getPushList())
             {
                 yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().CreateMessages(nextMessage._msg, nextMessage._user, nextMessage._position, mazeId));
