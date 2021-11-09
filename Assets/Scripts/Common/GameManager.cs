@@ -25,18 +25,20 @@ public class GameManager : MonoBehaviour
     {
         yield return StartCoroutine(setMazeId());
         yield return StartCoroutine(IsMazeFinised());
-        print("Probando 123");
-        if (isCompleted && isEndGame)
+        if (isCompleted && isEndGame || isCompleted && !isEndGame)
         {
             //te lo has pasado pero alguien antes tb
-            print("alguien lo paso antes que tu ");
-            //Destroy(ServiceLocator.Instance.GetService<MazeRender>().getPlayerTransform().gameObject);
+            deadMenu.SetActive(true);
+            string message = "No llegaste el primero...";
+            float time = 6.0f;
+            yield return StartCoroutine(DeadMessage(message, time));
+            deadMenu.SetActive(false);
+            yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().GetMaze());
+            ServiceLocator.Instance.GetService<MazeRender>().StartNewMaze();
         }
         else if (!isCompleted && isEndGame)
         {
-            print("Falocidades has ganao");
             //Te lo has pasado el primero
-            
             yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().UpdateMaze(mazeId));
             ServiceLocator.Instance.GetService<MazeRender>().setSeed(ServiceLocator.Instance.GetService<MazeRender>().GenerateNewSeed());
            yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().CreateMaze(ServiceLocator.Instance.GetService<MazeRender>().getSeed()));
@@ -46,7 +48,6 @@ public class GameManager : MonoBehaviour
         }
         else if (!isCompleted && !isEndGame)
         {
-            print("Entre aqui");
             //CONTINUA
             //Vaciar lista se�ales
             ServiceLocator.Instance.GetService<IPullMessage>().clearPullList();
@@ -59,13 +60,7 @@ public class GameManager : MonoBehaviour
             }
             ServiceLocator.Instance.GetService<IPullMessage>().clearPushList();
             ServiceLocator.Instance.GetService<IPullMessage>().updateMessages();
-            print("fallo aqui");
         }
-        else
-        {
-            //has muerto pero se ha completado
-        }
-        print("finalizo aqui");
     }
 
     public IEnumerator playerDead()
@@ -78,24 +73,15 @@ public class GameManager : MonoBehaviour
         float time = 0.0f;
         deadMenu.SetActive(true);
  
-        if (isCompleted)
-        {
-            //TERMINADO
-            message = "El laberinto ha sido completado, eres el perdedor";
-            time = 6.0f;
-        }
-        else
+        if (!isCompleted)
         {
             message = "Has muerto";
             time = 3.0f;
-
-        }
-        yield return StartCoroutine(DeadMessage(message, time));
-        if (!isCompleted)
-        {
+            yield return StartCoroutine(DeadMessage(message, time));
             Transform playerT = player.transform;
             playerT.position = ServiceLocator.Instance.GetService<MazeRender>().getStartPosition();
         }
+        
         player.GetComponent<Controller>().SetIsDead(false);
         deadMenu.SetActive(false);
 

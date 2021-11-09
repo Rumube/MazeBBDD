@@ -11,6 +11,7 @@ TagManager:
   - Start
   - UI_Write
   - Rejilla
+  - MessageParent
   layers:
   - Default
   - TransparentFX

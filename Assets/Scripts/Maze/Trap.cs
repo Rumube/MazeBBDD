@@ -103,7 +103,6 @@ public class Trap : MonoBehaviour
             Destroy(gameObject);
         }else if(other.gameObject.tag == "Player")
         {
-            print("ME CAGO EN LA LECHE MERCHE");
             StartCoroutine(ServiceLocator.Instance.GetService<GameManager>().playerDead());
         }
 

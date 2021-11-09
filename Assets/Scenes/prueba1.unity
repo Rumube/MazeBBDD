@@ -1660,7 +1660,7 @@ GameObject:
   - component: {fileID: 506127854}
   m_Layer: 0
   m_Name: Messages
-  m_TagString: Untagged
+  m_TagString: MessageParent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2579,9 +2579,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 979475149, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
+      propertyPath: m_Text
+      value: No llegaste el primero...
+      objectReference: {fileID: 0}
+    - target: {fileID: 1383344937, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645399738225413409, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8574196350334985384, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8574196350566460521, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
       propertyPath: m_Name
       value: CanvasGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 8574196350566460521, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8574196350566460525, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
       propertyPath: m_Pivot.x
@@ -2666,6 +2686,18 @@ PrefabInstance:
     - target: {fileID: 8574196350566460525, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8574196351300896111, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8574196351996556521, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8574196352090219147, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbd55dbec126e6f4a980ced6e3b75b27, type: 3}
