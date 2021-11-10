@@ -10,6 +10,8 @@ public interface IUserInfo
     public string GetUser();
     public int GetId();
     public string GetGlobalPoints();
+    public int GetCurrentPoints();
+    public void SetGlobalPoints(int value);
 
 
 

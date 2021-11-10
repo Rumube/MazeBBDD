@@ -32,6 +32,13 @@ public class GameManager : MonoBehaviour
             string message = "No llegaste el primero...";
             float time = 6.0f;
             yield return StartCoroutine(DeadMessage(message, time));
+            int current_GlobalPoints = int.Parse(ServiceLocator.Instance.GetService<IUserInfo>().GetGlobalPoints());
+            int current_Points = ServiceLocator.Instance.GetService<IUserInfo>().GetCurrentPoints();
+            string user_name = ServiceLocator.Instance.GetService<IUserInfo>().GetUser();
+            current_GlobalPoints += 250;
+            ServiceLocator.Instance.GetService<IUserInfo>().SetGlobalPoints(current_GlobalPoints);
+            print(ServiceLocator.Instance.GetService<IUserInfo>().GetUser());
+            yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().UpdateUser(user_name, current_Points, current_GlobalPoints));
             deadMenu.SetActive(false);
             yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().GetMaze());
             ServiceLocator.Instance.GetService<MazeRender>().StartNewMaze();
@@ -39,9 +46,16 @@ public class GameManager : MonoBehaviour
         else if (!isCompleted && isEndGame)
         {
             //Te lo has pasado el primero
+            int current_GlobalPoints = int.Parse(ServiceLocator.Instance.GetService<IUserInfo>().GetGlobalPoints());
+            int current_Points = ServiceLocator.Instance.GetService<IUserInfo>().GetCurrentPoints();
+            string user_name = "";
+            user_name = ServiceLocator.Instance.GetService<IUserInfo>().GetUser();
+            current_GlobalPoints += 500;
+            ServiceLocator.Instance.GetService<IUserInfo>().SetGlobalPoints(current_GlobalPoints);
+            yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().UpdateUser(user_name, current_Points, current_GlobalPoints));
             yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().UpdateMaze(mazeId));
             ServiceLocator.Instance.GetService<MazeRender>().setSeed(ServiceLocator.Instance.GetService<MazeRender>().GenerateNewSeed());
-           yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().CreateMaze(ServiceLocator.Instance.GetService<MazeRender>().getSeed()));
+            yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().CreateMaze(ServiceLocator.Instance.GetService<MazeRender>().getSeed()));
             yield return StartCoroutine(ServiceLocator.Instance.GetService<IRequestInfo>().GetMaze());
             ServiceLocator.Instance.GetService<MazeRender>().StartNewMaze();
             //Destroy(ServiceLocator.Instance.GetService<MazeRender>().getPlayerTransform().gameObject);

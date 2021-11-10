@@ -45,4 +45,14 @@ public class UserInfo : IUserInfo
     {
         return _global_points.ToString();
     }
+
+    public int GetCurrentPoints()
+    {
+        return _current_points;
+    }
+
+    public void SetGlobalPoints(int value)
+    {
+        _global_points = value;
+    }
 }
