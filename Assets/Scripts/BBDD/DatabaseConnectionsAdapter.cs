@@ -20,7 +20,7 @@ namespace BBDD
             form.AddField("nick", nickname);
             form.AddField("password", password);
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/Login.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/Login.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -57,7 +57,7 @@ namespace BBDD
             form.AddField("nick", nickname);
             form.AddField("password", password);
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/RegisterUser.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/RegisterUser.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -96,7 +96,7 @@ namespace BBDD
             form.AddField("CURRENT_POINTS", currentPoints);
             form.AddField("GLOBAL_POINTS", globalPoints);
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UpdateUser.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/UpdateUser.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -126,7 +126,7 @@ namespace BBDD
         {
             WWWForm form = new WWWForm();
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/GetLeaderboard.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/GetLeaderboard.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -170,7 +170,7 @@ namespace BBDD
             WWWForm form = new WWWForm();
             //Data we want to validate in php
             form.AddField("seed", seed);
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateMaze.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/CreateMaze.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -196,7 +196,7 @@ namespace BBDD
         {
             WWWForm form = new WWWForm();
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/GetMaze.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/GetMaze.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -230,7 +230,7 @@ namespace BBDD
             WWWForm form = new WWWForm();
             //Data we want to validate in php
             form.AddField("idMaze", id);
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UpdateMaze.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/UpdateMaze.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -258,7 +258,7 @@ namespace BBDD
             WWWForm form = new WWWForm();
             //Data we want to validate in php
             form.AddField("idMaze", id);
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/AskIfMazeFinished.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/AskIfMazeFinished.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -289,7 +289,7 @@ namespace BBDD
             form.AddField("position", position);
             form.AddField("idMaze", idMaze);
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateMessage.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/CreateMessage.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -327,7 +327,7 @@ namespace BBDD
             //Data we want to validate in php
             form.AddField("idMaze", idMaze);
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/GetMessagesFromMaze.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/GetMessagesFromMaze.php", form))
             {
                 yield return www.SendWebRequest();
 
@@ -367,7 +367,7 @@ namespace BBDD
             //Data we want to validate in php
             form.AddField("MAZE", idMaze);
 
-            using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/CreateTraps.php", form))
+            using (UnityWebRequest www = UnityWebRequest.Post("http://88.18.57.64/CreateTraps.php", form))
             {
                 yield return www.SendWebRequest();
 

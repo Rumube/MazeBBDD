@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UI;
+using System.Globalization;
+
 public class Controller : MonoBehaviour
 {
     //Refs
@@ -205,9 +207,9 @@ public class Controller : MonoBehaviour
             WritingUI(false);
             canWrite = true;
 
-            string signPos = mySign.transform.position.x.ToString();
-            signPos += "," + mySign.transform.position.y.ToString();
-            signPos += "," + mySign.transform.position.z.ToString();
+            string signPos = mySign.transform.position.x.ToString(CultureInfo.InvariantCulture);
+            signPos += "," + mySign.transform.position.y.ToString(CultureInfo.InvariantCulture);
+            signPos += "," + mySign.transform.position.z.ToString(CultureInfo.InvariantCulture);
             signPos += "," + mySign.transform.rotation.eulerAngles.y.ToString();
 
             Consumer.Message newMessage = new Consumer.Message(writingText.text, ServiceLocator.Instance.GetService<IUserInfo>().GetId(), signPos);

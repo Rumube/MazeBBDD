@@ -82,7 +82,6 @@ public class GameManager : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.GetComponent<Controller>().SetIsDead(true);
         yield return UpdateGame(false);
-        print("No llego aqui");
         string message = "";
         float time = 0.0f;
         deadMenu.SetActive(true);
